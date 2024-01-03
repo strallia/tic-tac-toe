@@ -5,7 +5,8 @@ const gameFlow = (function () {
     if (prevStep === 'player selection') {
       gameboard.updateBoard()
       gameboard.displayBoard();
-      console.log("Player 2's turn (O)");
+      player.setNextPlayer();
+      player.announcePlayerTurn();
     }
   };
 
@@ -14,17 +15,20 @@ const gameFlow = (function () {
   };
 })();
 
+
 const player = (function () {
   const players = {
     player1: {
+      name: "Player 1",
       token: 'X',
     },
     player2: {
+      name: "Player 2",
       token: 'O',
     },
   };
 
-  const activePlayer = players.player1;
+  let activePlayer = players.player1;
   
   let playerSelection = [];
 
@@ -35,13 +39,27 @@ const player = (function () {
   };
 
   const getPlayerSelection = () => playerSelection;
-
   const getPlayerToken = () => activePlayer.token;
+  const getActivePlayer = () => activePlayer;
+
+  const setNextPlayer = () => {
+    if (activePlayer === players.player1) {
+      activePlayer = players.player2;
+    } else {
+      activePlayer = players.player1;
+    }
+  };
+
+  const announcePlayerTurn = () => {
+    console.log(`${activePlayer.name}'s turn (${activePlayer.token})`);
+  }
 
   return {
     select,
     getPlayerSelection,
     getPlayerToken,
+    setNextPlayer,
+    announcePlayerTurn,
   }
 })();
 
