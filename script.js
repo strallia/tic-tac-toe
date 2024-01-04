@@ -1,17 +1,18 @@
 const gameFlow = (function () {
   console.log("Player 1 starts (X). Pick a spot by entering `player.select(<row index>, <column index>)`");
 
-  const gameMaster = (prevStep) => {
-    if (prevStep === 'player selection') {
-      gameboard.updateBoard();
-      gameboard.displayBoard();
-      if (gameboard.checkWinner()) {
-        console.log('MASTER: Winner found! Game complete.');
-        return;
-      };
-      player.setNextPlayer();
-      player.announcePlayerTurn();
-    }
+  const gameMaster = () => {
+    if (!gameboard.placeToken()) {
+      console.log('GM: That spot is already taken. Try again.');
+      return;
+    };
+    gameboard.displayBoard();
+    if (gameboard.checkWinner()) {
+      console.log('GM: Winner found! Game complete.');
+      return;
+    };
+    player.setNextPlayer();
+    player.announcePlayerTurn();
   };
 
   return {
@@ -42,7 +43,7 @@ const player = (function () {
   const select = (row, column) => {
     playerSelection = [];
     playerSelection.push(row, column);
-    gameFlow.gameMaster('player selection');
+    gameFlow.gameMaster();
   };
   const setNextPlayer = () => {
     if (activePlayer === players.player1) {
@@ -73,9 +74,15 @@ const gameboard = (function () {
     [0,0,0]
   ];
 
-  const updateBoard = () => {
+  const placeToken = () => {
     const chosenPosition = player.getPlayerSelection();
-    board[chosenPosition[0]][chosenPosition[1]] = player.getPlayerToken();
+    const currentValue = board[chosenPosition[0]][chosenPosition[1]];
+    if (currentValue === 0) {
+      board[chosenPosition[0]][chosenPosition[1]] = player.getPlayerToken();
+      return true;
+    } else {
+      return false;
+    }; 
   };
   const displayBoard = () => console.log(board);
   const checkWinner = () => {
@@ -134,11 +141,12 @@ const gameboard = (function () {
       return true;
     };
     console.log(`no winner this round`);
+    return false;
   };
 
   return {
     board,
-    updateBoard,
+    placeToken,
     displayBoard,
     checkWinner,
   };
