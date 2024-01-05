@@ -85,7 +85,6 @@ const gameboard = (function () {
       };
       checkFiltered(column);
     };
-
     // check each row
     for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
       let row = [];
@@ -94,7 +93,6 @@ const gameboard = (function () {
       };
       checkFiltered(row);
     };
-
     // check backslash diagonal
     {
       let diagonal = [];
@@ -103,7 +101,6 @@ const gameboard = (function () {
       };
       checkFiltered(diagonal);
     }
-
     // check forwardslash diagonal
     {
       let diagonal = [];
@@ -118,9 +115,28 @@ const gameboard = (function () {
     if (winner) {
       console.log(`${player.getPlayerName()} wins!`);
       return true;
+    } else {
+      return false;
+    }; 
+  };
+  const checkTie = () => {
+    let tiePresent = true;
+
+    outerLoop: 
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        if (board[row][col] === 0) {
+          tiePresent = false;
+          break outerLoop;
+        }
+      };
     };
-    console.log(`no winner this round`);
-    return false;
+
+    if (!tiePresent) {
+      return false;
+    } else {
+      return true;
+    };
   };
   const resetBoard = () => {
     for (let i = 0; i < 3; i++) {
@@ -133,6 +149,7 @@ const gameboard = (function () {
     placeToken,
     displayBoard,
     checkWinner,
+    checkTie,
     resetBoard,
   };
 })();
@@ -152,6 +169,10 @@ const gameFlow = (function () {
     gameboard.displayBoard();
     if (gameboard.checkWinner()) {
       console.log('GM: Winner found! Game complete. Run `gameFLow.resetGame()` to play again.');
+      return;
+    };
+    if (gameboard.checkTie()) {
+      console.log('GM: Tie! Game complete. Run `gameFLow.resetGame()` to play again.');
       return;
     };
     player.setNextPlayer();
