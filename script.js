@@ -1,26 +1,3 @@
-const gameFlow = (function () {
-  console.log("Player 1 starts (X). Pick a spot by entering `player.select(<row index>, <column index>)`");
-
-  const gameMaster = () => {
-    if (!gameboard.placeToken()) {
-      console.log('GM: That spot is already taken. Try again.');
-      return;
-    };
-    gameboard.displayBoard();
-    if (gameboard.checkWinner()) {
-      console.log('GM: Winner found! Game complete.');
-      return;
-    };
-    player.setNextPlayer();
-    player.announcePlayerTurn();
-  };
-
-  return {
-    gameMaster,
-  };
-})();
-
-
 const player = (function () {
   const players = {
     player1: {
@@ -54,7 +31,8 @@ const player = (function () {
   };
   const announcePlayerTurn = () => {
     console.log(`${activePlayer.name}'s turn (${activePlayer.token})`);
-  }
+  };
+  const resetPlayer = () => activePlayer = players.player1;
 
   return {
     select,
@@ -63,6 +41,7 @@ const player = (function () {
     getPlayerName,
     setNextPlayer,
     announcePlayerTurn,
+    resetPlayer,
   }
 })();
 
@@ -143,12 +122,52 @@ const gameboard = (function () {
     console.log(`no winner this round`);
     return false;
   };
+  const resetBoard = () => {
+    for (let i = 0; i < 3; i++) {
+      board[i] = [0,0,0];
+    };
+  };
 
   return {
     board,
     placeToken,
     displayBoard,
     checkWinner,
+    resetBoard,
   };
 })();
-console.log(gameboard.board);
+
+
+const gameFlow = (function () {
+  const announceNewGame = () => {
+    console.log("Player 1 starts (X). Pick a spot by entering `player.select(<row index>, <column index>)`");
+    console.log(gameboard.board);
+  };
+
+  const gameMaster = () => {
+    if (!gameboard.placeToken()) {
+      console.log('GM: That spot is already taken. Try again.');
+      return;
+    };
+    gameboard.displayBoard();
+    if (gameboard.checkWinner()) {
+      console.log('GM: Winner found! Game complete. Run `gameFLow.resetGame()` to play again.');
+      return;
+    };
+    player.setNextPlayer();
+    player.announcePlayerTurn();
+  };
+
+  const resetGame = () => {
+    gameboard.resetBoard();
+    player.resetPlayer();
+    gameFlow.announceNewGame();
+  };
+
+  return {
+    announceNewGame,
+    gameMaster,
+    resetGame,
+  };
+})();
+gameFlow.announceNewGame();
