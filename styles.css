@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* outline: 1px solid red; */
+  font-family: sans-serif;
+}
+
+:root {
+  font-size: 16px;
+}
+
+body {
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("images/bg-milad-fakurian-unsplash.jpg");
+  background-size: cover;
+  gap: 20px;
+  justify-content: center;
+} 
+
+h1 {
+  color: white;
+  font-size: 3rem;
+}
+
+.announcement {
+  color: white;
+}
+
+.glass-bg {
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: grid;
+  grid-template-rows: min-content auto;
+  justify-items: center;
+  gap: 30px;
+}
+
+.glass-bg,
+button{
+ border-radius: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 150px));
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+}
+
+button {
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 5rem;
+}
+
+button.x:before {
+  content: 'X';
+}
+
+button.o:before {
+  content: 'O';
+}
