@@ -178,8 +178,8 @@ const gameFlow = (function () {
 
   const resetGame = () => {
     gameboard.resetBoard();
+    renderUI.renderBoard();
     player.resetPlayer();
-    gameFlow.announceNewGame();
   };
 
   return {
@@ -194,18 +194,28 @@ const renderUI = (function () {
   const announcementDiv = document.querySelector(".announcement");
   announcementDiv.textContent = gameFlow.announceNewGame();
 
-  const gridDiv = document.querySelector(".grid");
-  gameboard.board.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-      const btn = document.createElement('button');
-      btn.addEventListener('click', () => {
-        btn.textContent = player.getPlayerToken();
-        player.select(rowIndex, colIndex);
-      });
-      gridDiv.appendChild(btn);
-    });
+  const resetBtn = document.querySelector('.reset');
+  resetBtn.addEventListener('click', () => {
+    gameFlow.resetGame();
   });
+
+  const renderBoard = () => {
+    const gridDiv = document.querySelector(".grid");
+    gridDiv.textContent = '';
+    gameboard.board.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        const btn = document.createElement('button');
+        btn.addEventListener('click', () => {
+          btn.textContent = player.getPlayerToken();
+          player.select(rowIndex, colIndex);
+        });
+        gridDiv.appendChild(btn);
+      });
+    });
+  };
   
   return {
+    renderBoard,
   };
 })();
+renderUI.renderBoard();
