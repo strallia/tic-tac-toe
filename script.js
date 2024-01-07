@@ -1,16 +1,16 @@
 const player = (function () {
   const players = {
-    player1: {
-      name: "Player 1",
+    playerX: {
+      name: "Player X",
       token: 'X',
     },
-    player2: {
-      name: "Player 2",
+    playerO: {
+      name: "Player O",
       token: 'O',
     },
   };
 
-  let activePlayer = players.player1;
+  let activePlayer = players.playerX;
   let playerSelection = [];
 
   const getPlayerSelection = () => playerSelection;
@@ -23,16 +23,16 @@ const player = (function () {
     gameFlow.gameMaster();
   };
   const setNextPlayer = () => {
-    if (activePlayer === players.player1) {
-      activePlayer = players.player2;
+    if (activePlayer === players.playerX) {
+      activePlayer = players.playerO;
     } else {
-      activePlayer = players.player1;
+      activePlayer = players.playerX;
     }
   };
   const announcePlayerTurn = () => {
     console.log(`${activePlayer.name}'s turn (${activePlayer.token})`);
   };
-  const resetPlayer = () => activePlayer = players.player1;
+  const resetPlayer = () => activePlayer = players.playerX;
 
   return {
     select,
@@ -156,7 +156,7 @@ const gameboard = (function () {
 
 
 const gameFlow = (function () {
-  const announceNewGame = () => "Player 1 starts (X)";
+  const announceNewGame = () => "Player X starts";
 
   const gameMaster = () => {
     if (!gameboard.placeToken()) {
