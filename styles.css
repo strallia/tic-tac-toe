@@ -40,11 +40,7 @@ h1 {
   grid-template-rows: min-content auto;
   justify-items: center;
   gap: 30px;
-}
-
-.glass-bg,
-button{
- border-radius: 5px;
+  border-radius: 20px;
 }
 
 .grid {
@@ -59,6 +55,7 @@ button {
   background-color: rgba(255, 255, 255, 0.3);
   color: white;
   font-size: 5rem;
+  border-radius: 5px;
 }
 
 button.x:before {
@@ -67,4 +64,9 @@ button.x:before {
 
 button.o:before {
   content: 'O';
+}
+
+button.reset {
+  font-size: 1rem;
+  padding: 10px 15px;
 }
