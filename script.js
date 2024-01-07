@@ -30,7 +30,7 @@ const player = (function () {
     }
   };
   const announcePlayerTurn = () => {
-    console.log(`${activePlayer.name}'s turn (${activePlayer.token})`);
+    console.log(`${activePlayer.name}'s turn`);
   };
   const resetPlayer = () => activePlayer = players.playerX;
 
@@ -53,7 +53,7 @@ const gameboard = (function () {
     ['','','']
   ];
 
-  const placeToken = () => {
+  const openCell = () => {
     const chosenPosition = player.getPlayerSelection();
     const currentValue = board[chosenPosition[0]][chosenPosition[1]];
     if (currentValue === '') {
@@ -146,7 +146,7 @@ const gameboard = (function () {
 
   return {
     board,
-    placeToken,
+    openCell,
     displayBoard,
     checkWinner,
     checkTie,
@@ -159,7 +159,7 @@ const gameFlow = (function () {
   const announceNewGame = () => "Player X starts";
 
   const gameMaster = () => {
-    if (!gameboard.placeToken()) {
+    if (!gameboard.openCell()) {
       console.log('GM: That spot is already taken. Try again.');
       return;
     };
@@ -195,14 +195,17 @@ const renderUI = (function () {
   announcementDiv.textContent = gameFlow.announceNewGame();
 
   const gridDiv = document.querySelector(".grid");
-  const boardFlatten = gameboard.board.flat();
-  boardFlatten.forEach((token) => {
-    const btn = document.createElement('button');
-    btn.textContent = token;
-    gridDiv.appendChild(btn);
-  })
-
+  gameboard.board.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      const btn = document.createElement('button');
+      btn.addEventListener('click', () => {
+        btn.textContent = player.getPlayerToken();
+        player.select(rowIndex, colIndex);
+      });
+      gridDiv.appendChild(btn);
+    });
+  });
+  
   return {
-
   };
 })();

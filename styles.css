@@ -58,14 +58,6 @@ button {
   border-radius: 5px;
 }
 
-button.x:before {
-  content: 'X';
-}
-
-button.o:before {
-  content: 'O';
-}
-
 button.reset {
   font-size: 1rem;
   padding: 10px 15px;
