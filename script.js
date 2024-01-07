@@ -156,10 +156,7 @@ const gameboard = (function () {
 
 
 const gameFlow = (function () {
-  const announceNewGame = () => {
-    console.log("Player 1 starts (X). Pick a spot by entering `player.select(<row index>, <column index>)`");
-    console.log(gameboard.board);
-  };
+  const announceNewGame = () => "Player 1 starts (X)";
 
   const gameMaster = () => {
     if (!gameboard.placeToken()) {
@@ -191,4 +188,13 @@ const gameFlow = (function () {
     resetGame,
   };
 })();
-gameFlow.announceNewGame();
+
+
+const renderUI = (function () {
+  const announcementDiv = document.querySelector(".announcement");
+  announcementDiv.textContent = gameFlow.announceNewGame();
+
+  return {
+
+  };
+})();
