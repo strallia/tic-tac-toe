@@ -30,7 +30,7 @@ const player = (function () {
     }
   };
   const announcePlayerTurn = () => {
-    console.log(`${activePlayer.name}'s turn`);
+    renderUI.renderAnnouncementDiv(`${activePlayer.name}'s turn`);
   };
   const resetPlayer = () => activePlayer = players.playerX;
 
@@ -113,7 +113,6 @@ const gameboard = (function () {
     };
 
     if (winner) {
-      console.log(`${player.getPlayerName()} wins!`);
       return true;
     } else {
       return false;
@@ -142,6 +141,7 @@ const gameboard = (function () {
     for (let i = 0; i < 3; i++) {
       board[i] = ['','',''];
     };
+    renderUI.renderAnnouncementDiv("Player X starts");
   };
 
   return {
@@ -156,20 +156,20 @@ const gameboard = (function () {
 
 
 const gameFlow = (function () {
-  const announceNewGame = () => "Player X starts";
+  let announcement = "Player X starts";
 
   const gameMaster = () => {
     if (!gameboard.openCell()) {
-      console.log('GM: That spot is already taken. Try again.');
+      renderUI.renderAnnouncementDiv('That spot is already taken. Try again.');
       return;
     };
     gameboard.displayBoard();
     if (gameboard.checkWinner()) {
-      console.log('GM: Winner found! Game complete. Run `gameFLow.resetGame()` to play again.');
+      renderUI.renderAnnouncementDiv(`${player.getPlayerName()} wins!`);
       return;
     };
     if (gameboard.checkTie()) {
-      console.log('GM: Tie! Game complete. Run `gameFLow.resetGame()` to play again.');
+      renderUI.renderAnnouncementDiv('Tie! Game complete.');
       return;
     };
     player.setNextPlayer();
@@ -183,7 +183,7 @@ const gameFlow = (function () {
   };
 
   return {
-    announceNewGame,
+    announcement,
     gameMaster,
     resetGame,
   };
@@ -191,16 +191,13 @@ const gameFlow = (function () {
 
 
 const renderUI = (function () {
-  const announcementDiv = document.querySelector(".announcement");
-  announcementDiv.textContent = gameFlow.announceNewGame();
-
   const resetBtn = document.querySelector('.reset');
   resetBtn.addEventListener('click', () => {
     gameFlow.resetGame();
   });
 
+  const gridDiv = document.querySelector(".grid");
   const renderBoard = () => {
-    const gridDiv = document.querySelector(".grid");
     gridDiv.textContent = '';
     gameboard.board.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
@@ -213,9 +210,17 @@ const renderUI = (function () {
       });
     });
   };
+
+  const announcementDiv = document.querySelector(".announcement");
+  announcementDiv.textContent = gameFlow.announcement;
+  const renderAnnouncementDiv = (string) => {
+    announcementDiv.textContent = '';
+    announcementDiv.textContent = string;
+  };
   
   return {
     renderBoard,
+    renderAnnouncementDiv,
   };
 })();
 renderUI.renderBoard();
