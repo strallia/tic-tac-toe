@@ -48,15 +48,15 @@ const player = (function () {
 
 const gameboard = (function () {
   const board = [
-    [0,0,0],
-    [0,0,0],
-    [0,0,0]
+    ['','',''],
+    ['','',''],
+    ['','','']
   ];
 
   const placeToken = () => {
     const chosenPosition = player.getPlayerSelection();
     const currentValue = board[chosenPosition[0]][chosenPosition[1]];
-    if (currentValue === 0) {
+    if (currentValue === '') {
       board[chosenPosition[0]][chosenPosition[1]] = player.getPlayerToken();
       return true;
     } else {
@@ -125,7 +125,7 @@ const gameboard = (function () {
     outerLoop: 
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 3; col++) {
-        if (board[row][col] === 0) {
+        if (board[row][col] === '') {
           tiePresent = false;
           break outerLoop;
         }
@@ -140,7 +140,7 @@ const gameboard = (function () {
   };
   const resetBoard = () => {
     for (let i = 0; i < 3; i++) {
-      board[i] = [0,0,0];
+      board[i] = ['','',''];
     };
   };
 
@@ -193,6 +193,14 @@ const gameFlow = (function () {
 const renderUI = (function () {
   const announcementDiv = document.querySelector(".announcement");
   announcementDiv.textContent = gameFlow.announceNewGame();
+
+  const gridDiv = document.querySelector(".grid");
+  const boardFlatten = gameboard.board.flat();
+  boardFlatten.forEach((token) => {
+    const btn = document.createElement('button');
+    btn.textContent = token;
+    gridDiv.appendChild(btn);
+  })
 
   return {
 
