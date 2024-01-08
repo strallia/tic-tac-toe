@@ -30,7 +30,7 @@ const player = (function () {
     }
   };
   const announcePlayerTurn = () => {
-    renderUI.renderAnnouncementDiv(`${activePlayer.name}'s turn`);
+    DOM.renderAnnouncementDiv(`${activePlayer.name}'s turn`);
   };
   const resetPlayer = () => activePlayer = players.playerX;
 
@@ -53,7 +53,7 @@ const gameboard = (function () {
     ['','','']
   ];
 
-  const openCell = () => {
+  const validCell = () => {
     const chosenPosition = player.getPlayerSelection();
     const currentValue = board[chosenPosition[0]][chosenPosition[1]];
     if (currentValue === '') {
@@ -141,12 +141,12 @@ const gameboard = (function () {
     for (let i = 0; i < 3; i++) {
       board[i] = ['','',''];
     };
-    renderUI.renderAnnouncementDiv("Player X starts");
+    DOM.renderAnnouncementDiv("Player X starts");
   };
 
   return {
     board,
-    openCell,
+    validCell,
     displayBoard,
     checkWinner,
     checkTie,
@@ -159,17 +159,18 @@ const gameFlow = (function () {
   let announcement = "Player X starts";
 
   const gameMaster = () => {
-    if (!gameboard.openCell()) {
-      renderUI.renderAnnouncementDiv('That spot is already taken. Try again.');
+    if (!gameboard.validCell()) {
+      DOM.renderAnnouncementDiv('That spot is already taken. Try again.');
       return;
     };
     gameboard.displayBoard();
     if (gameboard.checkWinner()) {
-      renderUI.renderAnnouncementDiv(`${player.getPlayerName()} wins!`);
+      DOM.renderAnnouncementDiv(`${player.getPlayerName()} wins!`);
+      DOM.disableBoard();
       return;
     };
     if (gameboard.checkTie()) {
-      renderUI.renderAnnouncementDiv('Tie! Game complete.');
+      DOM.renderAnnouncementDiv('Tie! Game complete.');
       return;
     };
     player.setNextPlayer();
@@ -178,7 +179,7 @@ const gameFlow = (function () {
 
   const resetGame = () => {
     gameboard.resetBoard();
-    renderUI.renderBoard();
+    DOM.renderBoard();
     player.resetPlayer();
   };
 
@@ -190,7 +191,7 @@ const gameFlow = (function () {
 })();
 
 
-const renderUI = (function () {
+const DOM = (function () {
   const resetBtn = document.querySelector('.reset');
   resetBtn.addEventListener('click', () => {
     gameFlow.resetGame();
@@ -205,6 +206,8 @@ const renderUI = (function () {
         btn.addEventListener('click', () => {
           btn.textContent = player.getPlayerToken();
           player.select(rowIndex, colIndex);
+          btn.setAttribute('disabled','');
+          console.log(btn);
         });
         gridDiv.appendChild(btn);
       });
@@ -217,10 +220,18 @@ const renderUI = (function () {
     announcementDiv.textContent = '';
     announcementDiv.textContent = string;
   };
-  
+
+  const disableBoard = () => {
+    const btns = document.querySelectorAll('.grid > button');
+    btns.forEach((btn) => {
+      btn.setAttribute('disabled','');
+    });
+  }
+
   return {
     renderBoard,
     renderAnnouncementDiv,
+    disableBoard,
   };
 })();
-renderUI.renderBoard();
+DOM.renderBoard();
