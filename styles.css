@@ -25,6 +25,7 @@ body {
 h1 {
   color: white;
   font-size: 3rem;
+  text-align: center;
 }
 
 .announcement {
@@ -35,12 +36,16 @@ h1 {
   padding: 30px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
   display: grid;
   grid-template-rows: min-content auto;
   justify-items: center;
   gap: 30px;
+}
+
+.glass-bg,
+button.reset {
   border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .grid {
@@ -60,5 +65,13 @@ button {
 
 button.reset {
   font-size: 1rem;
-  padding: 10px 15px;
+  padding: 15px 25px;
+}
+
+button.reset:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+button.reset:active {
+  background-color: rgba(255, 255, 255, 0.1)
 }
