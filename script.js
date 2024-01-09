@@ -63,7 +63,6 @@ const gameboard = (function () {
       return false;
     }; 
   };
-  const displayBoard = () => console.log(board);
   const checkWinner = () => {
     const playerToken = player.getPlayerToken();
     let winner = false;
@@ -147,7 +146,6 @@ const gameboard = (function () {
   return {
     board,
     validCell,
-    displayBoard,
     checkWinner,
     checkTie,
     resetBoard,
@@ -160,10 +158,8 @@ const gameFlow = (function () {
 
   const gameMaster = () => {
     if (!gameboard.validCell()) {
-      DOM.renderAnnouncementDiv('That spot is already taken. Try again.');
       return;
     };
-    gameboard.displayBoard();
     if (gameboard.checkWinner()) {
       DOM.renderAnnouncementDiv(`${player.getPlayerName()} wins!`);
       DOM.disableBoard();
@@ -201,13 +197,12 @@ const DOM = (function () {
   const renderBoard = () => {
     gridDiv.textContent = '';
     gameboard.board.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
+      row.forEach((col, colIndex) => {
         const btn = document.createElement('button');
         btn.addEventListener('click', () => {
           btn.textContent = player.getPlayerToken();
           player.select(rowIndex, colIndex);
           btn.setAttribute('disabled','');
-          console.log(btn);
         });
         gridDiv.appendChild(btn);
       });
