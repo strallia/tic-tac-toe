@@ -1,22 +1,29 @@
+function createPlayer(name, token) {
+  return { name, token };
+};
+
+
 const player = (function () {
   const players = {
-    playerX: {
-      name: "Player X",
-      token: 'X',
-    },
-    playerO: {
-      name: "Player O",
-      token: 'O',
-    },
+    playerX: {},
+    playerO: {},
   };
 
-  let activePlayer = players.playerX;
+  let activePlayer;
   let playerSelection = [];
 
   const getPlayerSelection = () => playerSelection;
   const getPlayerToken = () => activePlayer.token;
   const getPlayerName = () => activePlayer.name;
 
+  const setPlayers = (playerObject) => {
+    if (playerObject.token === 'X') {
+      players.playerX = playerObject;
+    } else {
+      players.playerO = playerObject;
+    };
+  };
+  const setInitialActivePlayer = () => activePlayer = players.playerX;
   const select = (row, column) => {
     playerSelection = [];
     playerSelection.push(row, column);
@@ -30,11 +37,13 @@ const player = (function () {
     }
   };
   const announcePlayerTurn = () => {
-    DOM.renderAnnouncementDiv(`${activePlayer.name}'s turn`);
+    DOM.renderAnnouncementDiv(`${activePlayer.name}'s turn (${getPlayerToken()})`);
   };
   const resetPlayer = () => activePlayer = players.playerX;
 
   return {
+    setPlayers,
+    setInitialActivePlayer,
     select,
     getPlayerSelection,
     getPlayerToken,
@@ -154,8 +163,6 @@ const gameboard = (function () {
 
 
 const gameFlow = (function () {
-  let announcement = "Player X starts";
-
   const gameMaster = () => {
     if (!gameboard.validCell()) {
       return;
@@ -180,7 +187,6 @@ const gameFlow = (function () {
   };
 
   return {
-    announcement,
     gameMaster,
     resetGame,
   };
@@ -210,7 +216,6 @@ const DOM = (function () {
   };
 
   const announcementDiv = document.querySelector(".announcement");
-  announcementDiv.textContent = gameFlow.announcement;
   const renderAnnouncementDiv = (string) => {
     announcementDiv.textContent = '';
     announcementDiv.textContent = string;
@@ -221,7 +226,21 @@ const DOM = (function () {
     btns.forEach((btn) => {
       btn.setAttribute('disabled','');
     });
-  }
+  };
+
+  const formSubmit = document.querySelector("input[type='submit']");
+  const nameInputs = document.querySelectorAll("input[type='text']");
+  formSubmit.addEventListener('click', (event) => {
+    event.preventDefault();
+    nameInputs.forEach((input) => {
+      const name = input.value;
+      const token = input.getAttribute('data-token');
+      const playerObject = createPlayer(name, token);
+      player.setPlayers(playerObject);
+    });
+    player.setInitialActivePlayer();
+    renderAnnouncementDiv(`${player.getPlayerName()} starts (${player.getPlayerToken()})`);
+  });
 
   return {
     renderBoard,
