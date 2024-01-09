@@ -147,7 +147,6 @@ const gameboard = (function () {
     for (let i = 0; i < 3; i++) {
       board[i] = ['','',''];
     };
-    DOM.renderAnnouncementDiv(`${player.getPlayerName()} starts (${player.getPlayerToken()})`);
   };
 
   return {
@@ -179,9 +178,10 @@ const gameFlow = (function () {
   };
 
   const resetGame = () => {
+    player.setInitialActivePlayer();
     gameboard.resetBoard();
     DOM.renderBoard();
-    player.setInitialActivePlayer();
+    DOM.renderAnnouncementDiv(`${player.getPlayerName()} starts (${player.getPlayerToken()})`);
   };
 
   return {
