@@ -9,24 +9,26 @@
 </head>
 <body>
   <h1>Tic-Tac-Toe</h1>
-  <div class="glass-bg">
+  <div class="glass-bg glass-border">
     <div class="announcement">
       <form>
         <h3>Enter player names</h3>
-        <div>
-          <label for="playerX">X:</label>
-          <input id="playerX" type="text" name="playerX" data-token="X">
+        <div class="inputs">
+          <div>
+            <label for="playerX">X:</label>
+            <input id="playerX" type="text" name="playerX" data-token="X" class="glass-border">
+          </div>
+          <div>
+            <label for="playerO">O:</label>
+            <input id="playerO" type="text" name="playerO" data-token="O"  class="glass-border">
+          </div>
         </div>
-        <div>
-          <label for="playerO">O:</label>
-          <input id="playerO" type="text" name="playerO" data-token="O">
-        </div>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" class="glass-border">
       </form>
     </div>
     <div class="grid">
     </div>
-    <button class="reset">Reset</button>
+    <button class="reset glass-border">Reset</button>
   </div>
   <footer>
       Created by <a href="https://github.com/strallia/tic-tac-toe">strallia</a>
