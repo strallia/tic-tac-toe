@@ -39,7 +39,6 @@ const player = (function () {
   const announcePlayerTurn = () => {
     DOM.renderAnnouncementDiv(`${activePlayer.name}'s turn (${getPlayerToken()})`);
   };
-  const resetPlayer = () => activePlayer = players.playerX;
 
   return {
     setPlayers,
@@ -50,7 +49,6 @@ const player = (function () {
     getPlayerName,
     setNextPlayer,
     announcePlayerTurn,
-    resetPlayer,
   }
 })();
 
@@ -149,7 +147,7 @@ const gameboard = (function () {
     for (let i = 0; i < 3; i++) {
       board[i] = ['','',''];
     };
-    DOM.renderAnnouncementDiv("Player X starts");
+    DOM.renderAnnouncementDiv(`${player.getPlayerName()} starts (${player.getPlayerToken()})`);
   };
 
   return {
@@ -183,7 +181,7 @@ const gameFlow = (function () {
   const resetGame = () => {
     gameboard.resetBoard();
     DOM.renderBoard();
-    player.resetPlayer();
+    player.setInitialActivePlayer();
   };
 
   return {
