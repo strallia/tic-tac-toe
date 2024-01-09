@@ -49,6 +49,10 @@ form {
   justify-content: center;
 }
 
+.inputs > div {
+  display: flex;
+}
+
 input,
 button.reset {
   background-color: rgba(255, 255, 255, 0.3);
